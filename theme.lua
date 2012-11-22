@@ -1,0 +1,1 @@
+/home/r00tr4t/.config/awesome/themes/default/theme.lua
