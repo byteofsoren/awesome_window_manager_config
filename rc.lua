@@ -48,6 +48,7 @@ file_manager = "thunar"
 weechat = "weechat-curses irc://Soren47@irc.freenode.net/#archlinux.se"
 set_extended_desktop = "xrandr --output DisplayPort-0 --mode 1920x1080 --left-of DVI-1 --output DVI-0 --mode 1920x1080 --right-of DVI-1"
 power_save = 0
+mylove ={}
 
 -- Auto run
 local r = require("runonce")
@@ -150,13 +151,24 @@ mysystray = widget({ type = "systray" })
 
 -- My tasks
 mymsg = widget({ type = "textbox" })
-mymsg.text = "**"
+--mymsg.text = "**"
 --ctext = widget({ type = "textbox"})
-local clktxt = 0
+mylove.mymesg = {}
+mylove.mymesg.messages = {}
+mylove.mymesg.messages[0] = "save: on"
+mylove.mymesg.messages[1] = "lua: ok"
+mylove.mymesg.msgc = 0
+
+
 vicious.register(mymsg, function (arg)
-				txt1 = mymsg.text
-				clktxt = 1 
-				return ""
+				mylove.mymesg.msgc = mylove.mymesg.msgc + 1				
+				s = table.getn(mylove.mymesg.messages)
+				if mylove.mymesg.msgc > s then
+					mylove.mymesg.msgc = 0
+				end
+				
+				--return mylove.mymesg.messages[mylove.mymesg.msgc]
+				return mylove.mymesg.messages[mylove.mymesg.msgc]
 			end)
 
 
@@ -298,11 +310,11 @@ globalkeys = awful.util.table.join(
         	if power_save == 1 then
 			power_save = 0
 			awful.util.spawn("xset +dpms s default")
-			mymsg.text = "power: on"
+			mylove.mymesg.messages[0] = "save: on"
 		else
 			power_save = 1
 			awful.util.spawn("xset -dpms s off")
-			mymsg.text = "power: off"
+			mylove.mymesg.messages[0] = "save: off"
 			
 		end
         end),
